@@ -10,53 +10,57 @@
   <div class="container">
     <h1>WORDULE</h1>
 
-    <div class="board">
-      {% for guess, scores in rows %}
-        <div class="row">
-          {% for i in range(5) %}
-            <div class="tile {{ scores[i] }}">{{ guess[i] }}</div>
+    <div class="game-area">
+      <div class="board-panel">
+        <div class="board">
+          {% for guess, scores in rows %}
+            <div class="row">
+              {% for i in range(5) %}
+                <div class="tile {{ scores[i] }}">{{ guess[i] }}</div>
+              {% endfor %}
+            </div>
+          {% endfor %}
+          {% for _ in remaining %}
+            <div class="row">
+              {% for _ in range(5) %}
+                <div class="tile"></div>
+              {% endfor %}
+            </div>
           {% endfor %}
         </div>
-      {% endfor %}
-      {% for _ in remaining %}
-        <div class="row">
-          {% for _ in range(5) %}
-            <div class="tile"></div>
-          {% endfor %}
-        </div>
-      {% endfor %}
-    </div>
 
-    {% if won %}
-      <p class="message win">You got it in {{ guess_count }} guess{{ 'es' if guess_count != 1 else '' }}!</p>
-    {% elif lost %}
-      <p class="message lose">Out of guesses! The word was {{ word }}.</p>
-    {% else %}
-      {% if error %}<p class="message error">{{ error }}</p>{% endif %}
-      <form method="post" class="guess-form">
-        <input type="text" id="guess-input" name="guess" maxlength="5" autofocus autocomplete="off" placeholder="5-letter word">
-        <input type="hidden" name="word" value="{{ word }}">
-        <input type="hidden" name="history" value="{{ history }}">
-        <button type="submit">Guess</button>
-      </form>
-    {% endif %}
+        {% if won %}
+          <p class="message win">You got it in {{ guess_count }} guess{{ 'es' if guess_count != 1 else '' }}!</p>
+        {% elif lost %}
+          <p class="message lose">Out of guesses! The word was {{ word }}.</p>
+        {% else %}
+          {% if error %}<p class="message error">{{ error }}</p>{% endif %}
+          <form method="post" class="guess-form">
+            <input type="text" id="guess-input" name="guess" maxlength="5" autofocus autocomplete="off" placeholder="5-letter word">
+            <input type="hidden" name="word" value="{{ word }}">
+            <input type="hidden" name="history" value="{{ history }}">
+            <button type="submit">Guess</button>
+          </form>
+        {% endif %}
 
-    {% if won or lost %}
-      <form method="get">
-        <button type="submit">Play Again</button>
-      </form>
-    {% endif %}
+        {% if won or lost %}
+          <form method="get">
+            <button type="submit">Play Again</button>
+          </form>
+        {% endif %}
+      </div>
 
-    <div class="keyboard">
-      {% for row in keyboard_rows %}
-        <div class="key-row">
-          {% if loop.last %}<button type="button" class="key key-wide" data-key="ENTER">Enter</button>{% endif %}
-          {% for letter in row %}
-            <button type="button" class="key {{ key_status.get(letter, '') }}" data-key="{{ letter }}">{{ letter }}</button>
-          {% endfor %}
-          {% if loop.last %}<button type="button" class="key key-wide" data-key="BACKSPACE">&#9003;</button>{% endif %}
-        </div>
-      {% endfor %}
+      <div class="keyboard">
+        {% for row in keyboard_rows %}
+          <div class="key-row">
+            {% if loop.last %}<button type="button" class="key key-wide" data-key="ENTER">Enter</button>{% endif %}
+            {% for letter in row %}
+              <button type="button" class="key {{ key_status.get(letter, '') }}" data-key="{{ letter }}">{{ letter }}</button>
+            {% endfor %}
+            {% if loop.last %}<button type="button" class="key key-wide" data-key="BACKSPACE">&#9003;</button>{% endif %}
+          </div>
+        {% endfor %}
+      </div>
     </div>
   </div>
 

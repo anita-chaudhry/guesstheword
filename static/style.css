@@ -15,8 +15,24 @@ body {
 
 .container {
   width: 100%;
-  max-width: 360px;
+  max-width: 980px;
   text-align: center;
+}
+
+.game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (min-width: 700px) {
+  .game-area {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+  }
 }
 
 h1 {
@@ -72,7 +88,7 @@ h1 {
   justify-content: center;
 }
 
-.guess-form input[type="text"] {
+.guess-form input[type='text'] {
   flex: 1;
   padding: 0.6rem;
   font-size: 1.1rem;
@@ -117,7 +133,6 @@ button:hover {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-top: 1.5rem;
 }
 
 .key-row {
@@ -128,23 +143,24 @@ button:hover {
 
 .key {
   flex: 1;
-  max-width: 40px;
+  max-width: 56px;
   height: 44px;
+  width: 40px;
   padding: 0 4px;
   border: none;
   border-radius: 4px;
   background: #818384;
   color: #d7dadc;
   font-weight: bold;
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   text-transform: uppercase;
   cursor: pointer;
 }
 
 .key-wide {
   flex: 1.5;
-  max-width: 60px;
-  font-size: 0.7rem;
+  max-width: 80px;
+  font-size: 0.85rem;
 }
 
 .key.correct {
