@@ -12,9 +12,9 @@ A Wordle clone built with Flask. Guess the hidden 5-letter word in 6 tries.
 
 - Type or click a 5-letter word, then press Guess
 - Each letter is colored after a guess:
-  - **Green** — correct letter, correct spot
-  - **Yellow** — correct letter, wrong spot
-  - **Gray** — letter not in the word
+  - **Green** - correct letter, correct spot
+  - **Yellow** - correct letter, wrong spot
+  - **Gray** - letter not in the word
 - The on-screen keyboard tracks the best-known status of every letter you've used
 - You have 6 guesses to find the word.
 
