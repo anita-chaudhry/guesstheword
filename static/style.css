@@ -112,3 +112,54 @@ button:hover {
 .message.error {
   color: #d9534f;
 }
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 1.5rem;
+}
+
+.key-row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.key {
+  flex: 1;
+  max-width: 40px;
+  height: 44px;
+  padding: 0 4px;
+  border: none;
+  border-radius: 4px;
+  background: #818384;
+  color: #d7dadc;
+  font-weight: bold;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.key-wide {
+  flex: 1.5;
+  max-width: 60px;
+  font-size: 0.7rem;
+}
+
+.key.correct {
+  background: #538d4e;
+}
+
+.key.present {
+  background: #b59f3b;
+}
+
+.key.absent {
+  background: #3a3a3c;
+  color: #6b6b6b;
+}
+
+.key:hover {
+  opacity: 0.85;
+}

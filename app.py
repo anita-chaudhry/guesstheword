@@ -5,6 +5,8 @@ app = Flask(__name__)
 
 WORD_LIST = ['ABORD', 'DRINK', 'FLOOR', 'REPLY', 'STONE', 'UNCLE', 'PLANT', 'APPLE', 'CROWD', 'RIGHT', 'DRESS', 'VIDEO', 'OFFER', 'HOUSE', 'LIGHT', 'PHONE', 'PEACE', 'TOWER']
 MAX_GUESSES = 6
+KEYBOARD_ROWS = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM']
+STATUS_PRIORITY = {'absent': 0, 'present': 1, 'correct': 2}
 
 
 def get_new_word():
@@ -16,6 +18,15 @@ def score_guess(word, guess):
         'correct' if c == word[i] else 'present' if c in word else 'absent'
         for i, c in enumerate(guess)
     ]
+
+
+def compute_key_status(rows):
+    status = {}
+    for guess, scores in rows:
+        for letter, score in zip(guess, scores):
+            if letter not in status or STATUS_PRIORITY[score] > STATUS_PRIORITY[status[letter]]:
+                status[letter] = score
+    return status
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -37,17 +48,20 @@ def wordule():
 
     won = word in history
     lost = not won and len(history) >= MAX_GUESSES
+    rows = [(guess, score_guess(word, guess)) for guess in history]
 
     return render_template(
         'index.html',
         word=word,
         history=','.join(history),
-        rows=[(guess, score_guess(word, guess)) for guess in history],
+        rows=rows,
         remaining=range(MAX_GUESSES - len(history)),
         guess_count=len(history),
         won=won,
         lost=lost,
         error=error,
+        keyboard_rows=KEYBOARD_ROWS,
+        key_status=compute_key_status(rows),
     )
 
 
