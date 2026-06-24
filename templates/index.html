@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wordule</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>WORDULE</h1>
+
+    <div class="board">
+      {% for guess, scores in rows %}
+        <div class="row">
+          {% for i in range(5) %}
+            <div class="tile {{ scores[i] }}">{{ guess[i] }}</div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+      {% for _ in remaining %}
+        <div class="row">
+          {% for _ in range(5) %}
+            <div class="tile"></div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if won %}
+      <p class="message win">You got it in {{ guess_count }} guess{{ 'es' if guess_count != 1 else '' }}!</p>
+    {% elif lost %}
+      <p class="message lose">Out of guesses! The word was {{ word }}.</p>
+    {% else %}
+      {% if error %}<p class="message error">{{ error }}</p>{% endif %}
+      <form method="post" class="guess-form">
+        <input type="text" name="guess" maxlength="5" autofocus autocomplete="off" placeholder="5-letter word">
+        <input type="hidden" name="word" value="{{ word }}">
+        <input type="hidden" name="history" value="{{ history }}">
+        <button type="submit">Guess</button>
+      </form>
+    {% endif %}
+
+    {% if won or lost %}
+      <form method="get">
+        <button type="submit">Play Again</button>
+      </form>
+    {% endif %}
+  </div>
+</body>
+</html>

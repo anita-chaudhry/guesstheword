@@ -1,0 +1,114 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #121213;
+  color: #d7dadc;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  margin: 0;
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+}
+
+h1 {
+  letter-spacing: 0.2em;
+  border-bottom: 1px solid #3a3a3c;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 1.5rem;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.tile {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  border: 2px solid #3a3a3c;
+  text-transform: uppercase;
+}
+
+.tile.correct {
+  background: #538d4e;
+  border-color: #538d4e;
+}
+
+.tile.present {
+  background: #b59f3b;
+  border-color: #b59f3b;
+}
+
+.tile.absent {
+  background: #3a3a3c;
+  border-color: #3a3a3c;
+}
+
+.guess-form {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.guess-form input[type="text"] {
+  flex: 1;
+  padding: 0.6rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 4px;
+  border: 1px solid #3a3a3c;
+  background: #1a1a1b;
+  color: #d7dadc;
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  background: #538d4e;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #487a43;
+}
+
+.message {
+  margin: 1rem 0;
+  font-size: 1.1rem;
+}
+
+.message.win {
+  color: #6aaa64;
+}
+
+.message.lose,
+.message.error {
+  color: #d9534f;
+}

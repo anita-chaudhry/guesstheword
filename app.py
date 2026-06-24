@@ -1,61 +1,53 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from random import randint
 
 app = Flask(__name__)
 
-word_List = ['Abord', 'Drink', 'Floor', 'Reply', 'stone', 'Uncle', 'Plant', 'Apple', 'Crowd', 'Right', 'Dress', 'Video', 'Offer', 'Horn', 'Light', 'Phone', 'Peace', 'Tower']
+WORD_LIST = ['ABORD', 'DRINK', 'FLOOR', 'REPLY', 'STONE', 'UNCLE', 'PLANT', 'APPLE', 'CROWD', 'RIGHT', 'DRESS', 'VIDEO', 'OFFER', 'HOUSE', 'LIGHT', 'PHONE', 'PEACE', 'TOWER']
+MAX_GUESSES = 6
 
 
 def get_new_word():
-    last_index = len(word_List) - 1
-    new_word_index = randint(0, last_index)
-    new_word = word_List[new_word_index]
-    return new_word.upper()
+    return WORD_LIST[randint(0, len(WORD_LIST) - 1)]
 
 
-def box_html(color):
-    return '<span style="color:' + color + '; font-size: 3em">&#9632;</span>'
-
-
-def guess_stats_html(word, guess, guess_num):
-    html = ''
-    for i, c in enumerate(guess):
-        if c == word[i]:
-            html += box_html('green')  # correct place
-        elif c in word:
-            html += box_html('yellow')  # incorrect place
-        else:
-            html += box_html('red')  # not right letter
-
-    if word == guess:
-        html += '<div> Yay! You got it in ' + str(guess_num) + ' guesses! </div>'
-
-    return html
+def score_guess(word, guess):
+    return [
+        'correct' if c == word[i] else 'present' if c in word else 'absent'
+        for i, c in enumerate(guess)
+    ]
 
 
 @app.route('/', methods=['GET', 'POST'])
 def wordule():
-    if request.method == 'GET' or 'guess' not in request.form:
-        word = get_new_word()
-        guess = ''
-        guess_num = 0
-        stats_html = ''
-    else:
-        word = request.form.get('word')
-        guess = request.form.get('guess', '').upper()
-        guess_num = int(request.form.get('guess_num', 0)) + 1
-        stats_html = guess_stats_html(word, guess, guess_num)
+    error = None
 
-    return (
-        '<h1>Wordule</h1>'
-        '<p>Try to guess the word!</p>'
-        + stats_html +
-        '<form method="post">'
-        '<input type="text" name="guess" maxlength="5" value="' + guess + '">'
-        '<input type="hidden" name="word" value="' + word + '" />'
-        '<input type="hidden" name="guess_num" value="' + str(guess_num) + '"/>'
-        '<input type="submit" value="Guess!" />'
-        '</form>'
+    if request.method == 'POST' and 'history' in request.form:
+        word = request.form['word']
+        history = request.form['history'].split(',') if request.form['history'] else []
+        guess = request.form.get('guess', '').strip().upper()
+
+        if len(guess) != 5 or not guess.isalpha():
+            error = 'Enter a 5-letter word.'
+        elif len(history) < MAX_GUESSES:
+            history.append(guess)
+    else:
+        word = get_new_word()
+        history = []
+
+    won = word in history
+    lost = not won and len(history) >= MAX_GUESSES
+
+    return render_template(
+        'index.html',
+        word=word,
+        history=','.join(history),
+        rows=[(guess, score_guess(word, guess)) for guess in history],
+        remaining=range(MAX_GUESSES - len(history)),
+        guess_count=len(history),
+        won=won,
+        lost=lost,
+        error=error,
     )
 
 
